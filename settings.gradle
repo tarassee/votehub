@@ -1,2 +1,3 @@
 rootProject.name = 'votehub'
+include 'state-register'
 

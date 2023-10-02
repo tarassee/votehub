@@ -1,0 +1,13 @@
+version: '3.9'
+
+services:
+  mysql:
+    container_name: votehub-mysql
+    image: mysql:8.0.32
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD
+    volumes:
+      - ./data/sql-init/state-register-init.sql:/docker-entrypoint-initdb.d/state-register-init.sql
+    ports:
+      - "3307:3306"
