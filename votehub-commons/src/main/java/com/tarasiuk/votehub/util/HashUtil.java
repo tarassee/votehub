@@ -2,7 +2,7 @@ package com.tarasiuk.votehub.util;
 
 import java.math.BigInteger;
 
-import static com.tarasiuk.votehub.util.Const.KEYBOARD_SYMBOLS;
+import static com.tarasiuk.votehub.util.UtilConstant.KEYBOARD_SYMBOLS;
 
 public final class HashUtil {
 

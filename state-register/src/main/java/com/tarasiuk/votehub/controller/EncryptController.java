@@ -1,6 +1,6 @@
 package com.tarasiuk.votehub.controller;
 
-import com.tarasiuk.votehub.data.SimpleProtocolVoteMessage;
+import com.tarasiuk.votehub.data.protocol.SimpleProtocolVoteMessage;
 import com.tarasiuk.votehub.util.GammaUtil;
 import com.tarasiuk.votehub.util.JsonSerializer;
 import org.springframework.http.ResponseEntity;

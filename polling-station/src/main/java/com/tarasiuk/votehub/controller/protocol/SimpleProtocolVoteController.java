@@ -1,4 +1,4 @@
-package com.tarasiuk.votehub.controller;
+package com.tarasiuk.votehub.controller.protocol;
 
 import com.tarasiuk.votehub.processor.VoteProcessor;
 import lombok.RequiredArgsConstructor;
