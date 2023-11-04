@@ -2,14 +2,14 @@ CREATE DATABASE IF NOT EXISTS state_register;
 
 USE state_register;
 
-CREATE TABLE citizen_model
-(
-    age         INT,
-    id          BIGINT AUTO_INCREMENT PRIMARY KEY,
-    is_capable  BIT,
-    is_prisoner BIT,
-    passport_id INT
-);
+# CREATE TABLE citizen_model
+# (
+#     age         INT,
+#     id          BIGINT AUTO_INCREMENT PRIMARY KEY,
+#     is_capable  BIT,
+#     is_prisoner BIT,
+#     passport_id INT
+# );
 
 INSERT INTO citizen_model (passport_id, age, is_capable, is_prisoner)
 VALUES (1001, 10, true, false),

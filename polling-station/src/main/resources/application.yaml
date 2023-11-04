@@ -1,0 +1,18 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: state-register-service
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3308/polling_station
+    username: root
+    password: root
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+application:
+  state-register-service:
+    url: localhost:8081
