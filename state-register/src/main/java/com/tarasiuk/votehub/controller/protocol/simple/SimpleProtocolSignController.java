@@ -1,6 +1,6 @@
-package com.tarasiuk.votehub.controller.protocol;
+package com.tarasiuk.votehub.controller.protocol.simple;
 
-import com.tarasiuk.votehub.data.protocol.SimpleProtocolSignMessage;
+import com.tarasiuk.votehub.data.protocol.simple.SimpleProtocolSignMessage;
 import com.tarasiuk.votehub.util.HashUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +17,7 @@ import static java.util.Objects.requireNonNull;
 @RequiredArgsConstructor
 @RequestMapping("/edc/")
 @RestController
-public class SimpleProtocolSignSignController {
+public class SimpleProtocolSignController {
 
     @PostMapping("/signMessage")
     public ResponseEntity<BigInteger> signMessage(@RequestBody @Valid SimpleProtocolSignMessage simpleProtocolSignMessage) {

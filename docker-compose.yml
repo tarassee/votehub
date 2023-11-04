@@ -11,5 +11,6 @@ services:
       - MYSQL_DATABASE=state_register
     volumes:
       - ./data/sql-init/state-register-init.sql:/docker-entrypoint-initdb.d/state-register-init.sql
+      - ./data/sql-init/polling-station-init.sql:/docker-entrypoint-initdb.d/polling-station-init.sql
     ports:
       - "3308:3306"

@@ -1,7 +1,7 @@
-package com.tarasiuk.votehub.processor.impl;
+package com.tarasiuk.votehub.processor.protocol.simple.impl;
 
 import com.tarasiuk.votehub.exception.VoteProcessingException;
-import com.tarasiuk.votehub.processor.AbstractSimpleProtocolVoteProcessor;
+import com.tarasiuk.votehub.processor.protocol.simple.AbstractSimpleProtocolVoteProcessor;
 import com.tarasiuk.votehub.service.CandidateStatisticsService;
 import com.tarasiuk.votehub.service.VoterEligibilityService;
 import com.tarasiuk.votehub.service.VoterService;

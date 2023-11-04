@@ -1,6 +1,7 @@
 package com.tarasiuk.votehub.service.impl;
 
 import com.tarasiuk.votehub.client.StateRegisterClient;
+import com.tarasiuk.votehub.exception.NotFoundException;
 import com.tarasiuk.votehub.model.VoterModel;
 import com.tarasiuk.votehub.repository.VoterRepository;
 import com.tarasiuk.votehub.service.VoterService;
@@ -17,16 +18,27 @@ import org.springframework.web.server.ResponseStatusException;
 @Service
 public class DefaultVoterService implements VoterService {
 
+    private static final String NO_PUBLIC_KEY_FOUND_FOR_PASSPORT_ID = "No public key found for passport id '%s'";
     private final VoterRepository voterRepository;
     private final StateRegisterClient stateRegisterClient;
 
     @Override
     public void recordVoter(Integer passportId) {
         existsByPassportId(passportId);
-        VoterModel voterModel = new VoterModel();
+        VoterModel voterModel = getOrCreateVoter(passportId);
         voterModel.setPassportId(passportId);
         voterModel.setVoted(true);
         voterRepository.save(voterModel);
+    }
+
+    // todo: refactor
+    private VoterModel getOrCreateVoter(Integer passportId) {
+        return voterRepository.findVoterModelByPassportId(passportId)
+                .orElseGet(() -> {
+                    VoterModel newVoter = new VoterModel();
+                    newVoter.setPassportId(passportId);
+                    return newVoter;
+                });
     }
 
     @Override
@@ -46,7 +58,7 @@ public class DefaultVoterService implements VoterService {
         } catch (ResponseStatusException | FeignException | WebServerException e) {
             // todo: refactor
             log.error("" + e.getMessage());
-            throw e;
+            throw new NotFoundException(String.format(NO_PUBLIC_KEY_FOUND_FOR_PASSPORT_ID, passportId));
         }
     }
 

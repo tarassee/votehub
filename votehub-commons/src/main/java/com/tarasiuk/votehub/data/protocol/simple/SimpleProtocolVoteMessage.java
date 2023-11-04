@@ -1,4 +1,4 @@
-package com.tarasiuk.votehub.data.protocol;
+package com.tarasiuk.votehub.data.protocol.simple;
 
 import java.math.BigInteger;
 

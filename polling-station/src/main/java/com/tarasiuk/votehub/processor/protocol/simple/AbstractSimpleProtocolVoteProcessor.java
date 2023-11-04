@@ -1,6 +1,7 @@
-package com.tarasiuk.votehub.processor;
+package com.tarasiuk.votehub.processor.protocol.simple;
 
-import com.tarasiuk.votehub.data.protocol.SimpleProtocolVoteMessage;
+import com.tarasiuk.votehub.data.protocol.simple.SimpleProtocolVoteMessage;
+import com.tarasiuk.votehub.processor.VoteProcessor;
 import com.tarasiuk.votehub.util.GammaUtil;
 import com.tarasiuk.votehub.util.JsonSerializer;
 
@@ -23,8 +24,8 @@ public abstract class AbstractSimpleProtocolVoteProcessor implements VoteProcess
         validatePassportId(passportId);
         validateCandidateValue(candidateValue);
         validateEligibility(passportId);
-        validateHasVoted(passportId);
         validateSignature(signature, candidateValue, passportId);
+        validateHasVoted(passportId);
 
         processVote(candidateValue, passportId);
     }

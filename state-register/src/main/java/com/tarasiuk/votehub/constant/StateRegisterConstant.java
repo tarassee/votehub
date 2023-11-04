@@ -8,6 +8,7 @@ public final class StateRegisterConstant {
     public static class CommonError {
 
         public static final String NO_CITIZEN_INFORMATION_FOUND_FOR_PASSPORT_ID = "No citizen information found for passport id '%s'";
+        public static final String NO_PUBLIC_KEY_FOUND_FOR_PASSPORT_ID = "No public key found for passport id '%s'";
 
         private CommonError() {
         }

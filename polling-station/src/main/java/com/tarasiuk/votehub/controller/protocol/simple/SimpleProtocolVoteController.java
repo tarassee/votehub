@@ -1,4 +1,4 @@
-package com.tarasiuk.votehub.controller.protocol;
+package com.tarasiuk.votehub.controller.protocol.simple;
 
 import com.tarasiuk.votehub.processor.VoteProcessor;
 import lombok.RequiredArgsConstructor;
@@ -10,16 +10,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
-@RequestMapping("/vote")
+@RequestMapping("/simpleProtocol")
 @RestController
 public class SimpleProtocolVoteController {
 
-    private final VoteProcessor defaultAbstractSimpleProtocolVoteProcessor;
+    private final VoteProcessor defaultSimpleProtocolVoteProcessor;
 
-    @PostMapping
+    @PostMapping("/vote")
     public ResponseEntity<Void> voteForCandidate(@RequestBody String encryptedMessage) {
 
-        defaultAbstractSimpleProtocolVoteProcessor.processVote(encryptedMessage);
+        defaultSimpleProtocolVoteProcessor.processVote(encryptedMessage);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

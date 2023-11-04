@@ -10,6 +10,8 @@ import org.springframework.boot.web.server.WebServerException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Set;
+
 @Slf4j
 @RequiredArgsConstructor
 @Service
@@ -20,7 +22,8 @@ public class DefaultVoterEligibilityService implements VoterEligibilityService {
     @Override
     public boolean isEligibleToVote(Integer passportId) {
         try {
-            CitizenEligibilityResult result = stateRegisterClient.isEligibleToVote(passportId);
+            // todo: refactor hardcoded
+            CitizenEligibilityResult result = stateRegisterClient.isEligibleToVote(passportId, Set.of("isCapable", "isNotPrisoner", "isAdult"));
             log.debug("Eligibility validation result for voter with passport id {}: {}", passportId, result);
             return result.eligible();
         } catch (ResponseStatusException | FeignException | WebServerException e) {

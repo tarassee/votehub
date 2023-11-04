@@ -30,7 +30,7 @@ public class DefaultCitizenService implements CitizenService {
 
     @Override
     public void deletePublicKeyFor(CitizenModel citizenModel) {
-        Optional.of(citizenModel.getPublicKey()).ifPresent(publicKeyRepository::delete);
+        Optional.ofNullable(citizenModel.getPublicKey()).ifPresent(publicKeyRepository::delete);
     }
 
     @Override
