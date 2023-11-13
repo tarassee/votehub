@@ -13,6 +13,8 @@ import org.springframework.boot.web.server.WebServerException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
+
 @Slf4j
 @RequiredArgsConstructor
 @Service
@@ -23,11 +25,29 @@ public class DefaultVoterService implements VoterService {
     private final StateRegisterClient stateRegisterClient;
 
     @Override
-    public void recordVoter(Integer passportId) {
+    public void recordVotedVoter(Integer passportId) {
         existsByPassportId(passportId);
         VoterModel voterModel = getOrCreateVoter(passportId);
         voterModel.setPassportId(passportId);
         voterModel.setVoted(true);
+        voterRepository.save(voterModel);
+    }
+
+    @Override
+    public void recordVoterCandidateValue(Integer passportId, String candidateValue) {
+        existsByPassportId(passportId);
+        VoterModel voterModel = getOrCreateVoter(passportId);
+        voterModel.setCandidateValue(candidateValue);
+        voterRepository.save(voterModel);
+    }
+
+    // todd: refactor, duplicates, extract common
+    @Override
+    public void recordHasSignatureMessageSetVoter(Integer passportId) {
+        existsByPassportId(passportId);
+        VoterModel voterModel = getOrCreateVoter(passportId);
+        voterModel.setPassportId(passportId);
+        voterModel.setHasSignatureMessageSet(true);
         voterRepository.save(voterModel);
     }
 
@@ -67,6 +87,18 @@ public class DefaultVoterService implements VoterService {
         return voterRepository.findVoterModelByPassportId(passportId)
                 .map(VoterModel::isVoted)
                 .orElse(false);
+    }
+
+    @Override
+    public boolean hasSignatureMessageSet(Integer passportId) {
+        return voterRepository.findVoterModelByPassportId(passportId)
+                .map(VoterModel::isHasSignatureMessageSet)
+                .orElse(false);
+    }
+
+    @Override
+    public List<VoterModel> getAllVoters() {
+        return voterRepository.findAll();
     }
 
 }

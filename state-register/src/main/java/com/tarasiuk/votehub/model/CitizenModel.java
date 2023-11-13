@@ -25,5 +25,9 @@ public class CitizenModel {
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "public_key_id", referencedColumnName = "id")
     private PublicKey publicKey;
+    @Column
+    private String firstName;
+    @Column
+    private String lastName;
 
 }

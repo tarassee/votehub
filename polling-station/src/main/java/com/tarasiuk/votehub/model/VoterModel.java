@@ -18,5 +18,9 @@ public class VoterModel {
     private Integer passportId;
     @Column
     private boolean voted;
+    @Column
+    private boolean hasSignatureMessageSet;
+    @Column
+    private String candidateValue;
 
 }
