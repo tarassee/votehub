@@ -18,10 +18,7 @@ public final class KeyGenerationUtil {
         BigInteger n = p.multiply(q);
         BigInteger phi = p.subtract(BigInteger.ONE).multiply(q.subtract(BigInteger.ONE));
 
-        BigInteger e;
-        do {
-            e = new BigInteger(bitsize, new SecureRandom());
-        } while (!e.gcd(phi).equals(BigInteger.ONE) || e.compareTo(BigInteger.ONE) <= 0 || e.compareTo(phi) >= 0);
+        BigInteger e = getRandomGcd(bitsize, phi);
 
         BigInteger d = e.modInverse(phi);
 
@@ -29,6 +26,14 @@ public final class KeyGenerationUtil {
         RSAKey privateKey = new RSAKey(d, n);
 
         return new RSAKeyPair(publicKey, privateKey);
+    }
+
+    public static BigInteger getRandomGcd(int bitsize, BigInteger phi) {
+        BigInteger e;
+        do {
+            e = new BigInteger(bitsize, new SecureRandom());
+        } while (!e.gcd(phi).equals(BigInteger.ONE) || e.compareTo(BigInteger.ONE) <= 0 || e.compareTo(phi) >= 0);
+        return e;
     }
 
 }

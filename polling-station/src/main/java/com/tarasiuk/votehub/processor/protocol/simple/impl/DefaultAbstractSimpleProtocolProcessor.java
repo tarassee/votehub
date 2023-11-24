@@ -1,7 +1,8 @@
 package com.tarasiuk.votehub.processor.protocol.simple.impl;
 
-import com.tarasiuk.votehub.exception.VoteProcessingException;
-import com.tarasiuk.votehub.processor.protocol.simple.AbstractSimpleProtocolVoteProcessor;
+import com.tarasiuk.votehub.exception.NotFoundException;
+import com.tarasiuk.votehub.exception.ValidationProcessingException;
+import com.tarasiuk.votehub.processor.protocol.simple.AbstractSimpleProtocolProcessor;
 import com.tarasiuk.votehub.service.CandidateStatisticsService;
 import com.tarasiuk.votehub.service.VoterEligibilityService;
 import com.tarasiuk.votehub.service.VoterService;
@@ -16,7 +17,7 @@ import java.util.function.Predicate;
 
 @RequiredArgsConstructor
 @Service
-public class DefaultAbstractSimpleProtocolVoteProcessor extends AbstractSimpleProtocolVoteProcessor {
+public class DefaultAbstractSimpleProtocolProcessor extends AbstractSimpleProtocolProcessor {
 
     private final VoterService voterService;
     private final CandidateStatisticsService candidateStatisticsService;
@@ -44,7 +45,7 @@ public class DefaultAbstractSimpleProtocolVoteProcessor extends AbstractSimplePr
 
     @Override
     protected void validateSignature(BigInteger signature, String candidateValue, Integer passportId) {
-        RSAKey publicKey = voterService.getPublicKeyByPassportId(passportId);
+        RSAKey publicKey = getPublicKeyByPassportId(passportId);
 
         // Отримуємо хеш з ЕЦП
         BigInteger signatureHash = signature.modPow(publicKey.key(), publicKey.n());
@@ -56,9 +57,19 @@ public class DefaultAbstractSimpleProtocolVoteProcessor extends AbstractSimplePr
         validate(comparingResult, bool -> bool, "Error! The signature is not valid!");
     }
 
+    private RSAKey getPublicKeyByPassportId(Integer passportId) {
+        RSAKey publicKey;
+        try {
+            publicKey = voterService.getPublicKeyByPassportId(passportId);
+        } catch (NotFoundException e) {
+            throw new ValidationProcessingException("Error! The signature is not valid!");
+        }
+        return publicKey;
+    }
+
     private <T> void validate(T value, Predicate<T> predicate, String errorMsg) {
         if (!predicate.test(value)) {
-            throw new VoteProcessingException(errorMsg);
+            throw new ValidationProcessingException(errorMsg);
         }
     }
 
@@ -66,7 +77,7 @@ public class DefaultAbstractSimpleProtocolVoteProcessor extends AbstractSimplePr
     @Override
     public void processVote(String candidateValue, Integer passportId) {
         candidateStatisticsService.incrementVoteCount(candidateValue);
-        voterService.recordVoter(passportId);
+        voterService.recordVotedVoter(passportId);
     }
 
 }

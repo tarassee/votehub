@@ -1,7 +1,7 @@
 package com.tarasiuk.votehub.processor.protocol.simple;
 
 import com.tarasiuk.votehub.data.protocol.simple.SimpleProtocolVoteMessage;
-import com.tarasiuk.votehub.processor.VoteProcessor;
+import com.tarasiuk.votehub.processor.Processor;
 import com.tarasiuk.votehub.util.GammaUtil;
 import com.tarasiuk.votehub.util.JsonSerializer;
 
@@ -10,10 +10,10 @@ import java.math.BigInteger;
 /**
  * This abstract class contains vote processing based on simple protocol.
  */
-public abstract class AbstractSimpleProtocolVoteProcessor implements VoteProcessor {
+public abstract class AbstractSimpleProtocolProcessor implements Processor<String> {
 
     @Override
-    public final void processVote(String encryptedMessage) {
+    public final void process(String encryptedMessage) {
         String decryptedMessage = GammaUtil.decrypt(encryptedMessage);
         SimpleProtocolVoteMessage simpleProtocolVoteData = JsonSerializer.deserialize(decryptedMessage, SimpleProtocolVoteMessage.class);
 
@@ -23,8 +23,8 @@ public abstract class AbstractSimpleProtocolVoteProcessor implements VoteProcess
 
         validatePassportId(passportId);
         validateCandidateValue(candidateValue);
-        validateEligibility(passportId);
         validateSignature(signature, candidateValue, passportId);
+        validateEligibility(passportId);
         validateHasVoted(passportId);
 
         processVote(candidateValue, passportId);

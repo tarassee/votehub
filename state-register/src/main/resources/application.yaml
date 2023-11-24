@@ -15,4 +15,4 @@ spring:
 
 rsa:
   key:
-    bitsize: 16
+    bitsize: 2048

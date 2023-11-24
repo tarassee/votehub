@@ -1,7 +1,7 @@
 package com.tarasiuk.votehub.exception.handler;
 
 import com.tarasiuk.votehub.exception.NotFoundException;
-import com.tarasiuk.votehub.exception.VoteProcessingException;
+import com.tarasiuk.votehub.exception.ValidationProcessingException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -17,7 +17,7 @@ public class ExceptionHandlerController {
         return createResponse(HttpStatus.NOT_FOUND, ex.getMessage());
     }
 
-    @ExceptionHandler(VoteProcessingException.class)
+    @ExceptionHandler(ValidationProcessingException.class)
     public ResponseEntity<ErrorResponse> voteProcessingException(Exception ex) {
         return createResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
     }

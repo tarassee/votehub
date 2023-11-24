@@ -1,7 +1,7 @@
 package com.tarasiuk.votehub.service.impl;
 
 import com.tarasiuk.votehub.service.CitizenService;
-import com.tarasiuk.votehub.service.KeyGenerationService;
+import com.tarasiuk.votehub.service.KeyService;
 import com.tarasiuk.votehub.util.KeyGenerationUtil;
 import com.tarasiuk.votehub.util.data.RSAKey;
 import com.tarasiuk.votehub.util.data.RSAKeyPair;
@@ -10,9 +10,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigInteger;
+
 @RequiredArgsConstructor
 @Service
-public class DefaultKeyGenerationService implements KeyGenerationService {
+public class DefaultKeyService implements KeyService {
 
     @Value("${rsa.key.bitsize:16}")
     private Integer bitsize;
@@ -27,6 +29,11 @@ public class DefaultKeyGenerationService implements KeyGenerationService {
         citizenService.savePublicKeyFor(publicKey.key(), publicKey.n(), passportId);
 
         return rsaKeyPair;
+    }
+
+    @Override
+    public BigInteger getMaskingKeyFor(BigInteger phi) {
+        return KeyGenerationUtil.getRandomGcd(bitsize, phi);
     }
 
 }
