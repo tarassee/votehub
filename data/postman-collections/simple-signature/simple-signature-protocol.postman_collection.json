@@ -1,0 +1,212 @@
+{
+	"info": {
+		"_postman_id": "9eed6648-d363-4061-848d-2f026d6157d2",
+		"name": "simple-signature-protocol",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19509566",
+		"_collection_link": "https://go-course-kpi.postman.co/workspace/PAEG~04bc9a6e-88aa-4ef8-95c1-6e5aefc6edfe/collection/19509566-9eed6648-d363-4061-848d-2f026d6157d2?action=share&source=collection_link&creator=19509566"
+	},
+	"item": [
+		{
+			"name": "util-requests Copy",
+			"item": [
+				{
+					"name": "Check citizen (voter) eligibility [state-register]",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/citizen/validate/1006?eligibilityFilters=isCapable,isNotPrisoner,isAdult",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"citizen",
+								"validate",
+								"1006"
+							],
+							"query": [
+								{
+									"key": "eligibilityFilters",
+									"value": "isCapable,isNotPrisoner,isAdult"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check has voter by passport id [polling-station]",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8082/publicStatistics/hasVoted/1001",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"publicStatistics",
+								"hasVoted",
+								"1001"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "0 - Get Candidates list [polling-station] Copy",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8082/publicStatistics/getAllCandidates",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"publicStatistics",
+						"getAllCandidates"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "1 - RSA keys generation for Citizen [state-register] Copy",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/key/generate/1005",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"key",
+						"generate",
+						"1005"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "2 - Sign Candidate value [state-register] Copy",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"message\": \"Zaroshenko\",\n    \"privateExponent\": 12818228609223546252461526998785545432181480825245655913686259628555407824487024261615763079253600631582383756840284214623263593757206429884378871704351942910797415371776543516905677283504393127305744970696486703058522223700778332638157858119680654188704541308047663169160872814788110523203789587179699882662244801998738104394035384718085657128319749857291180134563448335457066278391925360021695480505069097550345489825147129568353263522423953899962818843030656098030499776904149553149491169379758896288123075296045651994904633108039530080318817034187229746189772731608453190786683240753742897807068245623428716687343,\n    \"modulus\": 16974614313308214798438650452594604893123510706710204444558612932160302967637451124460357620035635759653247534002666948492186406450236895916630430727981626559420519520972696319655431069561635465140207866680244904468315548946428255909653404395099889601149295677516807949685260834479142196465300835482648024747150569798419474815818748627228341943980370568984518533423468679062501784622714994379293876555764504806865661052581626669684640840748682441991364474521569723036624730671775718751563698980104300581894163960945036108007552406216906147293802089503579126633371696596564666230265763693393963200629693651703499532399\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/simpleProtocol/signMessage",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"simpleProtocol",
+						"signMessage"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3 - Encrypt vote [state-register] Copy",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"passportId\": 1005,\n    \"vote\": \"Zaroshenko\",\n    \"signature\": 7855387085927955464410975227276771871765694617221321318149587863232060546249456530670312120386315239521996867160729342120861963182839726030319141042321409509934770881061380715845516911953242178555351801157033337081717487629508376347936889561183138964554588667939875320167873482497804995882724519972200663097893434735031091523370239446425568013945451844502317683953728819146571028856031956628974440052049232010617724875988546504524740443965490636038714990591938836209889652572345312871119658624429451294731026060016325829868387609242493141023212676717995749942986573869646896005714465187493877214629180847428025930387\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/simpleProtocol/encrypt",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"simpleProtocol",
+						"encrypt"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "4 - Send encrypted vote [polling-station] Copy",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "KFrk3#1q14fp.C~-~3EE^0voEPFbk2`4joy70.EE#uixl$6toEP@2~!\\#5&&\\*`&*-@3~*\\~5^#_!4`#{$7@%|! @#|@6^#{&`&%-$`&*]$4%&=(5^%=&`^@=* %%]# @!{!8$!-& &@[%5!![@5 !_#3^^[~7 @|*`@~{@ ~$\\#3%#_&3!&+(4 #}~2!&+(4##+~8##}%2#*}#` #}!6&*\\$3@~+^2!%-&9@#{&3&%+$2 !\\&7^^+@2&#{&6``=$6&!{~7#`|*2#^[$``#_*8!@]&9%!_% ``}$`^@_& ~#-(``${^  `|(9%$_%``$-$ $*=*`@~{$`@$-# @%[* #^\\$8`&=@3&~+!7^@[!`&~_$2`%_&8%&\\%5@~-^2^~{$2$^{#2 @{$9!#}#7&%-!6&~]~7 *-~8#$]!2%^=(4%*_#2`#\\*3`~-@ &~=!7@%+~  @=#2%&+^  $|%8^*|@5^#+%4$%}~6##-@4`^\\#2#`\\&2`*[*7%*]*9`*-%6~^_~9@#]~7&#[%6!&}(9!&-#2%^{#9#~\\# #~{$6$${(9%&|(4 *|$8%!\\@7^&[~3~%_(`^~]*5!!_&4%@\\%`@!-(8^&_^`%$\\! @*|~5`%-$7#${@5^!+!7%%=$ &~](8 $-*`#&-(5~@\\#`!~{$3^`+!`>",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8082/simpleProtocol/vote",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"simpleProtocol",
+						"vote"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "5 - Show election results [polling-station] Copy",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8082/publicStatistics/getElectionResults",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"publicStatistics",
+						"getElectionResults"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
