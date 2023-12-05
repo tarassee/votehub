@@ -2,4 +2,5 @@ rootProject.name = 'votehub'
 include 'state-register'
 include 'polling-station'
 include 'votehub-commons'
+include 'votehub-console'
 
